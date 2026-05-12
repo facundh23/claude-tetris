@@ -71,7 +71,11 @@ jobs:
                  `gh api --method PATCH repos/${{ github.repository }}/issues/comments/<ID> -f body='<contenido>'`
                - Si NO existe, creá un comentario nuevo con:
                  `gh issue comment ${{ github.event.issue.number }} --body '<contenido>'`
-            3. El cuerpo del comentario debe seguir EXACTAMENTE esta estructura (en español) e incluir el marcador al inicio:
+            3. El cuerpo del comentario debe usar GitHub Flavored Markdown (GFM) válido.
+               Usá `##` y `###` para encabezados, `- ` para listas de ítems, `1.` para listas numeradas,
+               `**texto**` para negrita, y dejá una línea en blanco entre cada sección.
+               NO uses etiquetas HTML como `<texto>` para el contenido (solo el marcador HTML al inicio).
+               Seguí EXACTAMENTE esta estructura e incluí el marcador al inicio:
 
             ```
             <!-- claude-issue-triage -->
@@ -80,27 +84,34 @@ jobs:
             > ℹ️ Análisis automático generado por Claude. ${{ github.event.action == 'edited' && '**Diagnóstico actualizado tras edición del issue.**' || '' }}
 
             ### Resumen
-            <resumen claro del problema o solicitud en 2-3 oraciones>
+
+            Escribí aquí 2-3 oraciones describiendo el problema o solicitud.
 
             ### Archivos / componentes afectados
-            <lista de archivos del repo que probablemente se vean involucrados, con una breve razón por cada uno>
+
+            - `archivo.js` — razón por la que está involucrado
+            - `otro.css` — razón por la que está involucrado
 
             ### Causa raíz probable / Enfoque sugerido
-            <si es bug: posible causa raíz; si es mejora: enfoque de implementación sugerido>
+
+            Escribí aquí la causa raíz probable (si es bug) o el enfoque de implementación sugerido (si es mejora).
 
             ### Pasos de alto nivel para la solución
-            1. <paso 1>
-            2. <paso 2>
-            ...
+
+            1. Primer paso concreto
+            2. Segundo paso concreto
+            3. ...
 
             ---
-            *Etiquetas asignadas: <lista de labels aplicados>*
+
+            *Etiquetas asignadas: `label1`, `label2`, `label3`*
             ```
 
             IMPORTANTE:
             - NO modifiques el título ni el cuerpo del issue.
             - NO escribas código de solución, solo el diagnóstico.
             - Respondé siempre en español.
+            - Reemplazá cada sección del template con contenido real; no copies el texto de ejemplo.
 
           claude_args: >-
             --allowedTools
